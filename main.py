@@ -129,6 +129,15 @@ class SummerTemplateBot2026(ForecastBot):
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
     _structure_output_validation_samples = 2
+        _forecast_question_concurrency_limiter = asyncio.Semaphore(1)
+
+    async def _run_individual_question_with_error_propagation(
+        self, question: MetaculusQuestion
+    ):
+        async with self._forecast_question_concurrency_limiter:
+            return await super()._run_individual_question_with_error_propagation(
+                question
+            )
 
     ##################################### RESEARCH #####################################
 
@@ -673,7 +682,7 @@ if __name__ == "__main__":
     # uncomment and edit to pin specific models.
     template_bot = SummerTemplateBot2026(
         research_reports_per_question=1,
-        predictions_per_research_report=5,
+        predictions_per_research_report=1,
         use_research_summary_to_forecast=False,
         publish_reports_to_metaculus=publish_to_metaculus,
         folder_to_save_reports_to=None,
