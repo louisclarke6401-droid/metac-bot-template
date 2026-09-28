@@ -92,6 +92,7 @@ class SummerTemplateBot2026(ForecastBot):
                 temperature=0.3,
                 timeout=40,
                 allowed_tries=2,
+                max_tokens=3000,
             ),
             "summarizer": "openai/gpt-4o-mini",
             "researcher": "asknews/news-summaries",
