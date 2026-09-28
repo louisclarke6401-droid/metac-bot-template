@@ -129,15 +129,13 @@ class SummerTemplateBot2026(ForecastBot):
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
     _structure_output_validation_samples = 2
-        _forecast_question_concurrency_limiter = asyncio.Semaphore(1)
+    _forecast_concurrency_limiter = asyncio.Semaphore(1)
 
-    async def _run_individual_question_with_error_propagation(
-        self, question: MetaculusQuestion
+    async def _make_prediction(
+        self, question: MetaculusQuestion, research: str
     ):
-        async with self._forecast_question_concurrency_limiter:
-            return await super()._run_individual_question_with_error_propagation(
-                question
-            )
+        async with self._forecast_concurrency_limiter:
+            return await super()._make_prediction(question, research)
 
     ##################################### RESEARCH #####################################
 
