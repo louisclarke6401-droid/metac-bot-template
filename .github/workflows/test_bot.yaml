@@ -37,7 +37,9 @@ jobs:
         run: poetry install --no-interaction --no-root
       - name: Run bot
         run: |
+          echo "===== DIAGNOSTIC ====="
           poetry run python -c "import inspect; from forecasting_tools import GeneralLlm; print(inspect.signature(GeneralLlm))"
+          echo "===== STARTING BOT ====="
           poetry run python main.py --mode test_questions
         # this reads the environment variables from the github repository.
         # Store under Settings --> Secrets and variables --> Actions
